@@ -1,0 +1,151 @@
+
+
+.hidden {
+  display: none!important;
+}
+
+
+
+
+.listSummarySection {
+  background-color: #f1f2f6;
+
+}
+
+
+
+.listSummarySection h4 {
+  font-family: 'Yanone Kaffeesatz', sans-serif;
+  text-decoration: underline;
+  font-size: 2em;
+  margin-top: 10vh;
+  margin-left: 50px;
+}
+
+
+
+.btn-warning {
+  margin-bottom: 3px;
+  font-size: .8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 0.5rem;
+  color: #fff!important;
+}
+
+.myListSummary {
+  width: 90%;
+  padding-left: 40px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-weight: 300;
+}
+
+.myListSummary li {
+  font-family: 'Yanone Kaffeesatz', sans-serif;
+  text-transform: capitalize;
+  list-style: none;
+  font-size: 1.3em;
+  margin-bottom: 5px;
+  cursor: context-menu;
+}
+
+.myListSummary li .btn {
+  font-weight: 300;
+}
+
+.myListSummary li p {
+  display: inline-block;
+  margin-left: 5px;
+  font-size: 1.3em;
+  font-weight: 300;
+}
+
+.myListSummary li i {
+  color: #0097e6;
+}
+.list-content {
+  position: relative;
+  width: 90%;
+  padding: 0;
+}
+
+
+@media screen and (min-width:320px) {
+  
+  .listSummarySection .myListSummary-wraper {
+    height: 14vh;
+    margin-top: 13%;
+  }
+
+  .myListSummary {
+    padding-left: 0;
+
+  }
+
+  .dropdown-menu {
+    left: 1px !important;
+  }
+
+  .myListSummary li {
+    text-align: left;
+  }
+
+  .list-content {
+    width: 100%;
+  }
+
+  .list-wraper .todo-list {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .list-wraper .taskForm .component1 {
+    margin-left: 3%;
+    width: 58%;
+  }
+
+
+}
+
+
+
+@media screen and (min-width:800px) {
+  .myListSummary {
+    padding-left: 40px;
+  }
+
+  .myListSummary li {
+    text-align: unset;
+  }
+}
+
+@media screen and (min-width:992px) {
+ 
+  .listSummarySection .myListSummary-wraper {
+    height: 30vh;
+    margin-top: 30%;
+  }
+}
+
+/* MEDIA QUERY based on Height*/
+
+@media screen and (min-height:480px){
+  .list-content {
+      height: 53vh;
+  }
+
+}
+@media screen and (min-height:600px){
+  .list-content {
+      height: 57vh;
+  }
+
+}
+
+@media screen and (min-height: 640px){
+.list-content {
+  height: 60vh;
+}
+}
