@@ -13,51 +13,27 @@ class App extends Component {
       input: '',
       show: false,
       clickState: false,
-      inputvalues:[]
+      inputvalues: []
 
     };
   }
 
   onInputchange = (event) => {
     this.setState({ input: event.target.value });
-    console.log(this.state.input);
   }
 
-  printInputValue = (event)=>{
-        event.preventDefault();
-        this.setState({inputvalues:[...this.state.inputvalues,this.state.input]});
-        this.setState({input:''});
-  }
-  
-
- 
-  clickStateToFalse = () => {
-    if (this.state.clickState) {
-        this.setState({ clickState: false });
+  printInputValue = (event) => {
+    event.preventDefault();
+    if (this.state.input !== '') {
+      this.setState({ inputvalues: [...this.state.inputvalues, this.state.input] });
+      this.setState({ input: '' });
     }
-}
-// componentDidUpdate(){
-//   if(this.state.clickState){
-//     ReactDOM.render(<Newlistli/>, document.getElementById('myListSummaryReact'));
-//     this.clickStateToFalse();
-//   }
-  
-//   console.log(this.state.clickState);
-// }
-
-  
-
-
-
+  }
 
 
 
   handleClose = () => this.setState({ show: false });
   handleShow = () => this.setState({ show: true });
-
-
-
-
 
 
   render() {
@@ -90,13 +66,13 @@ class App extends Component {
           <div className="row">
             <div className="col-lg-4 listSummarySection">
               <form className="form-inline formWraper">
-                <input onChange={this.onInputchange} value = {this.state.input} type="text" id="inputNewListItem" className="form-control" placeholder="Name Your List"
+                <input onChange={this.onInputchange} value={this.state.input} type="text" id="inputNewListItem" className="form-control" placeholder="Name Your List"
                   aria-label="Insert text" aria-describedby="edit an existing entry field" />
                 <button onClick={this.printInputValue} type="button" id="plusButton" className="btn-warning">+</button>
               </form>
               <div className="myListSummary-wraper">
                 <button type="button" id="dropdownMenuButton" className="btn btn-outline-warning dropdown-toggle btn-lg btn-block capitalize hidden " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All Your Lists</button>
-                <ShoppigListTitles inputvalues={this.state.inputvalues}/>
+                <ShoppigListTitles inputvalues={this.state.inputvalues} />
               </div>
 
             </div>{/*End Of Col-lg-4*/}
