@@ -1,20 +1,22 @@
 import React, { Component, Fragment } from 'react';
-import StartPage from '../components/StartPage/StartPage';
+import StartPage from '../../components/StartPage/StartPage';
 import Modal from 'react-bootstrap/Modal';
-import Navigation from '../components/Navigation/Navigation';
+import Navigation from '../../components/Navigation/Navigation';
 import Button from 'react-bootstrap/Button';
-import ShoppigListTitles from '../components/ShoppigListTitles/ShoppigListTitles';
-import './App.css';
+import ShoppigListTitles from '../../components/ShoppigListTitles/ShoppigListTitles';
+import Listcontent from '../Listcontent/Listcontent';
+import '../App/App.css';
+
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
       input: '',
-      show: false,
-      clickState: false,
-      inputvalues: []
-
+      show:false,
+      inputvalues: [],
+      listContentVisibility: true,
+      displayState:{display:'none'}
     };
   }
 
@@ -22,12 +24,34 @@ class App extends Component {
     this.setState({ input: event.target.value });
   }
 
+  incrementIndexNewLi = ()=>{
+    return this.setState({index:+1});
+  }
+
   printInputValue = (event) => {
     event.preventDefault();
     if (this.state.input !== '') {
       this.setState({ inputvalues: [...this.state.inputvalues, this.state.input] });
       this.setState({ input: '' });
+      
     }
+  }
+
+  showListWraper = (event) => {
+    console.log(this.state.listContentVisibility);
+    if(this.state.listContentVisibility){
+      this.setState({ displayState: {display:'initial'} });
+      this.setState({ listContentVisibility: false });
+    }
+    else if(!this.state.listContentVisibility){
+      this.setState({ displayState: {display:'none'}});
+      this.setState({ listContentVisibility: 'true' });
+    }
+    
+  }
+
+  hideListWraper = () => {
+    this.setState({ listContentVisibility: false });
   }
 
 
@@ -72,12 +96,14 @@ class App extends Component {
               </form>
               <div className="myListSummary-wraper">
                 <button type="button" id="dropdownMenuButton" className="btn btn-outline-warning dropdown-toggle btn-lg btn-block capitalize hidden " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All Your Lists</button>
-                <ShoppigListTitles inputvalues={this.state.inputvalues} />
+                <ShoppigListTitles inputvalues={this.state.inputvalues} showListWraper={this.showListWraper} />
               </div>
 
             </div>{/*End Of Col-lg-4*/}
+            <div className="col-lg-8 list-content">
+              <Listcontent inputvalues={this.state.inputvalues} displayState={this.state.displayState} />
+            </div>
 
-            <div className="col-lg-8 list-content"></div>
           </div> {/*End Of Row*/}
 
 

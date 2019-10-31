@@ -99,7 +99,9 @@
   .list-content {
     width: 100%;
   }
-
+/* .list-wraper{
+  display:none;
+} */
   .list-wraper .todo-list {
     width: 100%;
     margin-left: 0;
