@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import Navigation from '../../components/Navigation/Navigation';
 import Button from 'react-bootstrap/Button';
 import ShoppigListTitles from '../../components/ShoppigListTitles/ShoppigListTitles';
-import Listcontent from '../Listcontent/Listcontent';
+import Taskform from '../../components/Taskform/Taskform';
 import '../App/App.css';
 
 
@@ -13,48 +13,64 @@ class App extends Component {
     super();
     this.state = {
       input: '',
-      show:false,
+      show: false,
       inputvalues: [],
       listContentVisibility: true,
-      displayState:{display:'none'}
+      listWraperArray: [],
+      currentlistWraperHtml: [],
     };
   }
+
+
 
   onInputchange = (event) => {
     this.setState({ input: event.target.value });
   }
 
-  incrementIndexNewLi = ()=>{
-    return this.setState({index:+1});
-  }
 
   printInputValue = (event) => {
     event.preventDefault();
     if (this.state.input !== '') {
       this.setState({ inputvalues: [...this.state.inputvalues, this.state.input] });
       this.setState({ input: '' });
-      
+
+
     }
+  }
+
+  listWraperContentArray = () => {
+    return (this.state.inputvalues.map((value, index) =>
+      <div id={value} className="list-wraper" key={`${value}${index}`}>
+        <Taskform />
+        <h3 className="todo-name">{value}</h3>
+        <ul className="todo-list"></ul>
+      </div>)
+
+    )
+  }
+
+  generateListWraperArray = () => {
+    this.setState({ listWraperArray: this.listWraperContentArray() });
+    console.log(this.state.listWraperArray);
+
   }
 
   showListWraper = (event) => {
-    console.log(this.state.listContentVisibility);
-    if(this.state.listContentVisibility){
-      this.setState({ displayState: {display:'initial'} });
-      this.setState({ listContentVisibility: false });
-    }
-    else if(!this.state.listContentVisibility){
-      this.setState({ displayState: {display:'none'}});
-      this.setState({ listContentVisibility: 'true' });
-    }
-    
+    this.generateListWraperArray();
+    this.state.listWraperArray.forEach((list) => {
+      console.log(`This is the list ${list.props}`);
+      if (event.target.id === list.props.id) {
+        let tempArray = []
+        tempArray.push(list);
+        this.setState({ currentlistWraperHtml: [...tempArray] });
+      }
+    });
+
   }
 
-  hideListWraper = () => {
-    this.setState({ listContentVisibility: false });
+  printListWraper = () => {
+    return this.state.currentlistWraperHtml[0];
   }
-
-
 
   handleClose = () => this.setState({ show: false });
   handleShow = () => this.setState({ show: true });
@@ -80,6 +96,7 @@ class App extends Component {
           </Modal.Footer>
         </Modal>
         {/*Modal*/}
+
         <StartPage />
 
         <div className="container-fluid ">
@@ -98,26 +115,14 @@ class App extends Component {
                 <button type="button" id="dropdownMenuButton" className="btn btn-outline-warning dropdown-toggle btn-lg btn-block capitalize hidden " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All Your Lists</button>
                 <ShoppigListTitles inputvalues={this.state.inputvalues} showListWraper={this.showListWraper} />
               </div>
-
             </div>{/*End Of Col-lg-4*/}
+
             <div className="col-lg-8 list-content">
-              <Listcontent inputvalues={this.state.inputvalues} displayState={this.state.displayState} />
+              {this.printListWraper()}
             </div>
 
           </div> {/*End Of Row*/}
-
-
-
-
-
-
-
         </div>{/*End Of Container Fluid*/}
-
-
-
-
-
       </Fragment>
 
 
