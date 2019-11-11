@@ -93,23 +93,8 @@
   .listSummarySection #inputNewListItem {
     width: 82%;
 }
-  .dropdown-menu {
-    left: 1px !important;
-  }
   .list-content {
     width: 100%;
-  }
-/* .list-wraper{
-  display:none;
-} */
-  .list-wraper .todo-list {
-    width: 100%;
-    margin-left: 0;
-  }
-
-  .list-wraper .taskForm .component1 {
-    margin-left: 3%;
-    width: 58%;
   }
 
 
