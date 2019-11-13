@@ -14,7 +14,8 @@ const Taskform = ({
     editListItemName,
     save,
     changeCircleIconState,
-    uncheckedIconState }) => {
+    uncheckedIconState,
+    checkedIconState }) => {
 
     let renderedTaskFormId = null;
     inputvalues.forEach((value, index) => {
@@ -84,8 +85,8 @@ const Taskform = ({
                         (<li key={`${element}${index}`} className="li-item">
                             <div className="list-component text-secondary">
                                 <div className="check-list">
-                                    <i  className={`far fa-circle ${uncheckedIconState}`} role="button" onClick={changeCircleIconState} aria-hidden="true"></i>
-                                    <i className="far fa-check-circle text-success hidden" role="button" aria-hidden="true"></i>
+                                    <i  className={`far fa-circle ${uncheckedIconState()}`} role="button" onClick={changeCircleIconState} aria-hidden="true"></i>
+                                    <i className={`far fa-check-circle text-success ${checkedIconState()}`} role="button" onClick={changeCircleIconState} aria-hidden="true"></i>
                                     <p className="p-text">
                                         {
                                             save === false ? editListItemName() : element

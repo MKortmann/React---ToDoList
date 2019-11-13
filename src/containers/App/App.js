@@ -33,10 +33,10 @@ class App extends Component {
     };
   }
 
- componentDidUpdate = ()=>{
-  this.uncheckedIconState();
+//  componentDidUpdate = ()=>{
+//   this.uncheckedIconState();
 
- }
+//  }
 
   onInputchange = (event) => {
       this.setState({ input: event.target.value });
@@ -89,8 +89,7 @@ class App extends Component {
 
 //Taskform List Items functionalities
 
-changeCircleIconState = (e)=>{
-  console.log(e.target.html);
+changeCircleIconState = ()=>{
   if(this.state.circleIconState===true){
     this.setState({circleIconState:false});
   }
@@ -101,6 +100,10 @@ changeCircleIconState = (e)=>{
 
  uncheckedIconState =()=>{
   return !this.state.circleIconState ? "hidden" : ""
+    
+}
+ checkedIconState =()=>{
+  return this.state.circleIconState ? "hidden" : ""
     
 }
 
@@ -174,6 +177,8 @@ changeCircleIconState = (e)=>{
               editListItemName={this.editListItemName}
               save={this.state.save}
               uncheckedIconState = {this.uncheckedIconState}
+              checkedIconState = {this.checkedIconState}
+              changeCircleIconState = {this.changeCircleIconState}
             />
           </div>
         )
