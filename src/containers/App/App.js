@@ -13,6 +13,10 @@ class App extends Component {
     super();
     this.state = {
       input: '',
+      save: true,
+      modalInput: '',
+      circleIconState:true,
+      elementName: '',
       show: false,
       inputvalues: [],
       inputAddNewItem: '',
@@ -24,80 +28,138 @@ class App extends Component {
         //   items:[]
         // }
       ],
-      allListButtons: []
+      allListButtons: [],
+      setButtonValue: ''
     };
   }
 
+ componentDidUpdate = ()=>{
+  this.uncheckedIconState();
+
+ }
 
   onInputchange = (event) => {
-    this.setState({ input: event.target.value });
+      this.setState({ input: event.target.value });
+    
   }
 
   onInputChangeNewItem = (event) => {
-    this.setState({ inputAddNewItem: event.target.value });
-
+      this.setState({ inputAddNewItem: event.target.value });
+    
   }
 
-  printInputValue = () => {
+  printInputValue = (event) => {
     if (this.state.input !== '') {
       this.setState({ inputvalues: [...this.state.inputvalues, this.state.input] });
       this.setState({ input: '' });
+      console.log(this.state.inputvalues);
+      this.setState({ allListButtons: [...this.state.allListButtons, this.state.input] });
+  
+      const allListButtons = [...this.state.allListButtons];
+      if (!allListButtons.includes(this.state.input)) {
+        let listButtonArray = [...this.state.listButtonArray];
+        listButtonArray.push({ id: this.state.input, listItems: [] });
+        this.setState({ listButtonArray: listButtonArray });
+        console.log(this.state.listButtonArray);
+      }
+
     }
-    console.log(this.state.inputvalues);
-    this.setState({allListButtons : [...this.state.allListButtons, this.state.input]});
-
-    const allListButtons = [...this.state.allListButtons];
-    if (!allListButtons.includes(this.state.input)) {
-     
-
-      let listButtonArray = [...this.state.listButtonArray];
-      listButtonArray.push({ id: this.state.input, listItems: [] });
-      this.setState({ listButtonArray: listButtonArray });
-      console.log(this.state.listButtonArray);
-    }
-
-
+   
   }
 
   showButton = (event) => {
     this.setState({ listButton: event.target.id });
   }
 
-
-
-
-
-
-  addNewItem = (event) => {
+  addNewItem = () => {
     if (this.state.inputAddNewItem !== '') {
       this.setState({ inputValuesNewItem: [...this.state.inputValuesNewItem, this.state.inputAddNewItem] });
-      this.setState({ inputAddNewItem: '' });
+      this.setState({ inputAddNewItem: '' }); 
+
+      let listButtonArray = [...this.state.listButtonArray];
+      listButtonArray.forEach((element) => {
+        if (element.id === this.state.listButton) {
+          element.listItems.push(this.state.inputAddNewItem);
+        }
+      });
+
     }
-
-    console.log(this.state.inputValuesNewItem);
-
-    let listButtonArray = [...this.state.listButtonArray];
     
-
-    listButtonArray.forEach((element) => {
-      if (element.id === this.state.listButton) {
-        element.listItems.push(this.state.inputAddNewItem);
-      }
-    });
   }
 
+//Taskform List Items functionalities
 
-  handleClose = () => this.setState({ show: false });
-  handleShow = () => this.setState({ show: true });
+changeCircleIconState = (e)=>{
+  console.log(e.target.html);
+  if(this.state.circleIconState===true){
+    this.setState({circleIconState:false});
+  }
+  else{
+    this.setState({circleIconState:true});
+  }
+}
+
+ uncheckedIconState =()=>{
+  return !this.state.circleIconState ? "hidden" : ""
+    
+}
 
 
+  // Modal Functionality
 
+  modalOnInputChange = (event) => {
+    this.setState({ modalInput: event.target.value });
+  }
 
+  saveModalNewValue = (event) => {
+    console.log(this.state.save);
+
+    if (this.state.save === true) {
+      this.state.listButtonArray.forEach((list) => {
+        if (list.id === this.state.listButton) {
+          list.listItems.forEach((element, index) => {
+            if (element === this.state.elementName) {
+              list.listItems.splice(index, 1, this.state.modalInput)
+            }
+          });
+        }
+      });
+      this.setState({ show: false });
+
+    }
+  }
+
+  editListItemName = () => {
+    return this.state.modalInput;
+  }
+
+  handleClose = (event) => {
+    this.setState({ show: false });
+    if (event.target.id === 'modalCancelButton')
+    console.log(event.target.id === 'modalCancelButton');
+      this.setState({ show: false });
+
+  }
+
+  handleShow = (event) => {
+    console.log(event);
+    console.log(this.state.save)
+    this.state.listButtonArray.forEach((list) => {
+      list.listItems.forEach((element, index) => {
+        if (event.target.id === element) {
+          this.setState({ elementName: event.target.id });
+        }
+      });
+    });
+    this.setState({ show: true });
+    this.setState({ save: true });
+  }
 
 
 
   render() {
 
+    
     let componentToBeRender = null;
     this.state.inputvalues.forEach((value, index) => {
       if (this.state.listButton === value) {
@@ -107,38 +169,34 @@ class App extends Component {
               onInputChangeNewItem={this.onInputChangeNewItem}
               addNewItem={this.addNewItem}
               listButton={this.state.listButton}
-              inputValuesNewItem={this.state.inputValuesNewItem}
               listItemsElements={this.state.listButtonArray[index].listItems}
+              handleShow={this.handleShow}
+              editListItemName={this.editListItemName}
+              save={this.state.save}
+              uncheckedIconState = {this.uncheckedIconState}
             />
           </div>
-
         )
       }
-
     })
-
-
-
-
-
 
 
     return (
       <Fragment>
         {/*Bootstrap Modal*/}
-        < Modal show={this.state.show} onHide={this.handleClose} className="modal-sm" >
-          <Modal.Header closeButton className="modal-header text-white">
+        < Modal show={this.state.show}  className="modal-sm " >
+          <Modal.Header className="modal-header text-white">
             <Modal.Title>Edit Entry</Modal.Title>
           </Modal.Header>
 
           <Modal.Body>
-            <input type="text" className="form-control inputForModal" placeholder="Your edit in here" aria-label="edit"
+            <input onChange={this.modalOnInputChange} type="text" className="form-control inputForModal" placeholder="Your edit in here" aria-label="edit"
               aria-describedby="edit an existing entry field" />
           </Modal.Body>
 
           <Modal.Footer>
-            <Button id="modalCancelButton" className="btn text-white">Close</Button>
-            <Button id="modalSaveButton" className="btn bg-warning text-white" >Save</Button>
+            <Button id="modalCancelButton" className="btn text-white" onClick={this.handleClose}>Close</Button>
+            <Button onClick={this.saveModalNewValue} id="modalSaveButton" className="btn bg-warning text-white" >Save</Button>
           </Modal.Footer>
         </Modal >
         {/*Modal*/}
