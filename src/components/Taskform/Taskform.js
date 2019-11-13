@@ -15,7 +15,8 @@ const Taskform = ({
     save,
     changeCircleIconState,
     uncheckedIconState,
-    checkedIconState }) => {
+    checkedIconState,
+    lineThroughText }) => {
 
     let renderedTaskFormId = null;
     inputvalues.forEach((value, index) => {
@@ -87,7 +88,7 @@ const Taskform = ({
                                 <div className="check-list">
                                     <i  className={`far fa-circle ${uncheckedIconState()}`} role="button" onClick={changeCircleIconState} aria-hidden="true"></i>
                                     <i className={`far fa-check-circle text-success ${checkedIconState()}`} role="button" onClick={changeCircleIconState} aria-hidden="true"></i>
-                                    <p className="p-text">
+                                    <p className="p-text" style={lineThroughText()}>
                                         {
                                             save === false ? editListItemName() : element
                                         }

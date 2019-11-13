@@ -106,6 +106,11 @@ changeCircleIconState = ()=>{
   return this.state.circleIconState ? "hidden" : ""
     
 }
+ 
+lineThroughText = ()=>{
+  const lineThrough = {textDecoration:'line-through'}
+  return !this.state.circleIconState ? lineThrough : {}
+}
 
 
   // Modal Functionality
@@ -179,6 +184,7 @@ changeCircleIconState = ()=>{
               uncheckedIconState = {this.uncheckedIconState}
               checkedIconState = {this.checkedIconState}
               changeCircleIconState = {this.changeCircleIconState}
+              lineThroughText = {this.lineThroughText}
             />
           </div>
         )
