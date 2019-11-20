@@ -208,6 +208,10 @@ body {
 
 }
 
+.lineThrough {
+  text-decoration:line-through;
+}
+
 .quantity {
   width: 39px;
   height: 21px;

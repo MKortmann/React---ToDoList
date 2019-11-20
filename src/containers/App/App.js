@@ -15,7 +15,8 @@ class App extends Component {
       input: '',
       save: true,
       modalInput: '',
-      circleIconState:true,
+      iconId:'',
+      circleIconState: true,
       elementName: '',
       show: false,
       inputvalues: [],
@@ -25,46 +26,40 @@ class App extends Component {
       listButtonArray: [
         // {
         //   id:'',
-        //   items:[]
+        //   listItems:[itemName,true]
         // }
       ],
       allListButtons: [],
-      setButtonValue: ''
     };
   }
-
-//  componentDidUpdate = ()=>{
-//   this.uncheckedIconState();
-
-//  }
-
   onInputchange = (event) => {
-      this.setState({ input: event.target.value });
-    
+    this.setState({ input: event.target.value });
+
   }
 
   onInputChangeNewItem = (event) => {
-      this.setState({ inputAddNewItem: event.target.value });
-    
+    this.setState({ inputAddNewItem: event.target.value });
+
   }
 
   printInputValue = (event) => {
-    if (this.state.input !== '') {
+    if (this.state.input !== '' && !this.state.inputvalues.includes(this.state.input)) {
       this.setState({ inputvalues: [...this.state.inputvalues, this.state.input] });
       this.setState({ input: '' });
-      console.log(this.state.inputvalues);
       this.setState({ allListButtons: [...this.state.allListButtons, this.state.input] });
-  
+
       const allListButtons = [...this.state.allListButtons];
       if (!allListButtons.includes(this.state.input)) {
         let listButtonArray = [...this.state.listButtonArray];
         listButtonArray.push({ id: this.state.input, listItems: [] });
         this.setState({ listButtonArray: listButtonArray });
-        console.log(this.state.listButtonArray);
       }
 
     }
-   
+    else{
+      window.alert(`This list name is allready assign. Please choose another name for your list.`);
+    }
+
   }
 
   showButton = (event) => {
@@ -74,43 +69,59 @@ class App extends Component {
   addNewItem = () => {
     if (this.state.inputAddNewItem !== '') {
       this.setState({ inputValuesNewItem: [...this.state.inputValuesNewItem, this.state.inputAddNewItem] });
-      this.setState({ inputAddNewItem: '' }); 
+      this.setState({ inputAddNewItem: '' });
 
       let listButtonArray = [...this.state.listButtonArray];
       listButtonArray.forEach((element) => {
         if (element.id === this.state.listButton) {
-          element.listItems.push(this.state.inputAddNewItem);
+          element.listItems.push([this.state.inputAddNewItem,true ]);
         }
       });
-
     }
-    
+
   }
 
-//Taskform List Items functionalities
+  //Taskform List Items functionalities
 
-changeCircleIconState = ()=>{
-  if(this.state.circleIconState===true){
-    this.setState({circleIconState:false});
-  }
-  else{
-    this.setState({circleIconState:true});
-  }
-}
+  changeIconState = (event) => {
+    this.setState({iconId:event.target.id});
+    const listButtonArray = [...this.state.listButtonArray];
+    listButtonArray.forEach((list) => {
+      if (list.id === this.state.listButton) {
+        console.log(list.listItems);
+        list.listItems.forEach((element) => {
+          if (element[0] === event.target.id && element[1]===true ) {
+            console.log(element[0] === event.target.id && element[1]===true);
+              element.splice(1,1,false);
+          }
+          else if(element[0] === event.target.id && element[1]===false){
+            element.splice(1,1,true);
+          }
+        });
+        this.setState({listButtonArray:listButtonArray});
+      }
+    });
+        // if (this.state.circleIconState === true) {
+        //   this.setState({ circleIconState: false });
+    
+        // }
+        // else {
+        //   this.setState({ circleIconState: true });
+        // }
+        
+    }
 
- uncheckedIconState =()=>{
-  return !this.state.circleIconState ? "hidden" : ""
-    
-}
- checkedIconState =()=>{
-  return this.state.circleIconState ? "hidden" : ""
-    
-}
- 
-lineThroughText = ()=>{
-  const lineThrough = {textDecoration:'line-through'}
-  return !this.state.circleIconState ? lineThrough : {}
-}
+  //  uncheckedIconState =()=>{
+  //       return !this.state.circleIconState ? "hidden" : ""
+  // }
+  //  checkedIconState =()=>{
+  //       return this.state.circleIconState ? "hidden" : ""
+  // }
+  // lineThroughText = () => {
+  //           return !this.state.circleIconState ? "lineThrough" : ""
+  //         }
+
+
 
 
   // Modal Functionality
@@ -120,20 +131,20 @@ lineThroughText = ()=>{
   }
 
   saveModalNewValue = (event) => {
-    console.log(this.state.save);
+    const listButtonArray = [...this.state.listButtonArray];
 
     if (this.state.save === true) {
-      this.state.listButtonArray.forEach((list) => {
+      listButtonArray.forEach((list) => { 
         if (list.id === this.state.listButton) {
           list.listItems.forEach((element, index) => {
-            if (element === this.state.elementName) {
-              list.listItems.splice(index, 1, this.state.modalInput)
+            if (element[0] === this.state.elementName) {
+              element.splice(0, 1, this.state.modalInput)
             }
           });
         }
       });
       this.setState({ show: false });
-
+      this.setState({ listButtonArray: listButtonArray });
     }
   }
 
@@ -144,17 +155,14 @@ lineThroughText = ()=>{
   handleClose = (event) => {
     this.setState({ show: false });
     if (event.target.id === 'modalCancelButton')
-    console.log(event.target.id === 'modalCancelButton');
       this.setState({ show: false });
 
   }
 
   handleShow = (event) => {
-    console.log(event);
-    console.log(this.state.save)
     this.state.listButtonArray.forEach((list) => {
-      list.listItems.forEach((element, index) => {
-        if (event.target.id === element) {
+      list.listItems.forEach((element) => {
+        if (event.target.id === element[0]) {
           this.setState({ elementName: event.target.id });
         }
       });
@@ -165,9 +173,8 @@ lineThroughText = ()=>{
 
 
 
-  render() {
 
-    
+  render() {
     let componentToBeRender = null;
     this.state.inputvalues.forEach((value, index) => {
       if (this.state.listButton === value) {
@@ -175,16 +182,18 @@ lineThroughText = ()=>{
           <div id={value} className="list-wraper" key={`${value}${index}`}>
             <Taskform inputvalues={this.state.inputvalues}
               onInputChangeNewItem={this.onInputChangeNewItem}
+              iconId = {this.state.iconId}
               addNewItem={this.addNewItem}
               listButton={this.state.listButton}
               listItemsElements={this.state.listButtonArray[index].listItems}
+              listButtonArray={this.state.listButtonArray}
               handleShow={this.handleShow}
               editListItemName={this.editListItemName}
               save={this.state.save}
-              uncheckedIconState = {this.uncheckedIconState}
+              changeIconState = {this.changeIconState}
+              uncheckedIconState={this.uncheckedIconState}
               checkedIconState = {this.checkedIconState}
-              changeCircleIconState = {this.changeCircleIconState}
-              lineThroughText = {this.lineThroughText}
+              lineThroughText={this.lineThroughText}
             />
           </div>
         )
@@ -195,7 +204,7 @@ lineThroughText = ()=>{
     return (
       <Fragment>
         {/*Bootstrap Modal*/}
-        < Modal show={this.state.show}  className="modal-sm " >
+        < Modal show={this.state.show} className="modal-sm " >
           <Modal.Header className="modal-header text-white">
             <Modal.Title>Edit Entry</Modal.Title>
           </Modal.Header>
@@ -234,8 +243,6 @@ lineThroughText = ()=>{
             <div className="col-lg-8 list-content">
               {componentToBeRender}
             </div>
-
-
           </div> {/*End Of Row*/}
         </div>{/*End Of Container Fluid*/}
       </Fragment >

@@ -19,25 +19,12 @@
     }
 }
 
-
-
-
-
-
 .hidden {
   display: none!important;
 }
-
-
-
-
 .listSummarySection {
   background-color: #f1f2f6;
-
 }
-
-
-
 .listSummarySection h4 {
   font-family: 'Yanone Kaffeesatz', sans-serif;
   text-decoration: underline;
@@ -96,18 +83,13 @@
   .list-content {
     width: 100%;
   }
-
-
 }
+
 @media screen and (min-width: 375px) {
   .listSummarySection #inputNewListItem {
       width: 85%;
   }
 }
-
-
-
-
 @media screen and (min-width:992px) {
   .listSummarySection #inputNewListItem {
     width: 82%;
