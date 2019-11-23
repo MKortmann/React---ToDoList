@@ -12,7 +12,8 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      input: '',
+      inputAddNewButtonValue: '',
+      inputAddNewItemValue: '',
       save: true,
       modalInput: '',
       iconId:'',
@@ -20,7 +21,6 @@ class App extends Component {
       elementName: '',
       show: false,
       inputvalues: [],
-      inputAddNewItem: '',
       inputValuesNewItem: [],
       listButton: '',
       listButtonArray: [
@@ -29,36 +29,41 @@ class App extends Component {
         //   listItems:[itemName,true]
         // }
       ],
+      container: [
+        // {
+        // BUTTON: "Button1", ITEMS: [
+                              // {
+                                    // ITEM: "item"
+                              // }
+                            // ]
+        // }
+      ],
       allListButtons: [],
     };
   }
   onInputchange = (event) => {
-    this.setState({ input: event.target.value });
+    event.preventDefault();
+    console.log(event.target.value);
+    this.setState({ inputAddNewButtonValue: event.target.value });
 
   }
 
   onInputChangeNewItem = (event) => {
-    this.setState({ inputAddNewItem: event.target.value });
-
+    event.preventDefault();
+    this.setState({ inputAddNewItemValue: event.target.value });
   }
 
   printInputValue = (event) => {
-    if (this.state.input !== '' && !this.state.inputvalues.includes(this.state.input)) {
-      this.setState({ inputvalues: [...this.state.inputvalues, this.state.input] });
-      this.setState({ input: '' });
-      this.setState({ allListButtons: [...this.state.allListButtons, this.state.input] });
 
-      const allListButtons = [...this.state.allListButtons];
-      if (!allListButtons.includes(this.state.input)) {
-        let listButtonArray = [...this.state.listButtonArray];
-        listButtonArray.push({ id: this.state.input, listItems: [] });
-        this.setState({ listButtonArray: listButtonArray });
-      }
+    const container = [...this.state.container];
 
-    }
-    else{
-      window.alert(`This list name is allready assign. Please choose another name for your list.`);
-    }
+    container.push( {BUTTON: `${this.state.inputAddNewButtonValue}`, ITEMS: [  ] } );
+    this.setState({
+      container: container,
+      inputAddNewButtonValue: ""
+    })
+
+    console.log(this.container)
 
   }
 
@@ -103,12 +108,12 @@ class App extends Component {
     });
         // if (this.state.circleIconState === true) {
         //   this.setState({ circleIconState: false });
-    
+
         // }
         // else {
         //   this.setState({ circleIconState: true });
         // }
-        
+
     }
 
   //  uncheckedIconState =()=>{
@@ -134,7 +139,7 @@ class App extends Component {
     const listButtonArray = [...this.state.listButtonArray];
 
     if (this.state.save === true) {
-      listButtonArray.forEach((list) => { 
+      listButtonArray.forEach((list) => {
         if (list.id === this.state.listButton) {
           list.listItems.forEach((element, index) => {
             if (element[0] === this.state.elementName) {
